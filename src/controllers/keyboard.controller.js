@@ -18,6 +18,13 @@ const keyBindings = {
   f: () => droneController.flip("f"),
   b: () => droneController.flip("b"),
   x: () => process.exit(),
+  1: droneController.requestBattery,
+  2: droneController.requestSpeed,
+  3: droneController.requestAttitude,
+  4: droneController.requestBarometer,
+  5: droneController.requestAcceleration,
+  6: droneController.requestTof,
+  7: droneController.requestWifi,
 };
 
 module.exports = {
@@ -57,5 +64,12 @@ module.exports = {
     logger.info("f: Flip forward");
     logger.info("b: Flip backward");
     logger.info("x: Exit");
+    logger.info("1: Request battery level");
+    logger.info("2: Request speed");
+    logger.info("3: Request attitude");
+    logger.info("4: Request barometer data");
+    logger.info("5: Request acceleration data");
+    logger.info("6: Request TOF data");
+    logger.info("7: Request WiFi data");
   },
 };

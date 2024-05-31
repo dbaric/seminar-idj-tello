@@ -7,6 +7,7 @@ module.exports = {
 
     telloService.onMessage((message) => {
       logger.info(`Received message from Tello: ${message}`);
+      this.handleFeedback(message);
     });
   },
 
@@ -63,5 +64,60 @@ module.exports = {
   flip: function (direction) {
     logger.info(`Flipping ${direction}...`);
     telloService.sendCommand(`flip ${direction}`);
+  },
+
+  requestBattery: function () {
+    logger.info("Requesting battery level...");
+    telloService.requestBattery();
+  },
+
+  requestSpeed: function () {
+    logger.info("Requesting speed...");
+    telloService.requestSpeed();
+  },
+
+  requestAttitude: function () {
+    logger.info("Requesting attitude...");
+    telloService.requestAttitude();
+  },
+
+  requestBarometer: function () {
+    logger.info("Requesting barometer data...");
+    telloService.requestBarometer();
+  },
+
+  requestAcceleration: function () {
+    logger.info("Requesting acceleration data...");
+    telloService.requestAcceleration();
+  },
+
+  requestTof: function () {
+    logger.info("Requesting TOF data...");
+    telloService.requestTof();
+  },
+
+  requestWifi: function () {
+    logger.info("Requesting WiFi data...");
+    telloService.requestWifi();
+  },
+
+  handleFeedback: function (message) {
+    if (message.startsWith("bat")) {
+      logger.info(`Battery level: ${message}`);
+    } else if (message.startsWith("speed")) {
+      logger.info(`Speed: ${message}`);
+    } else if (message.startsWith("attitude")) {
+      logger.info(`Attitude: ${message}`);
+    } else if (message.startsWith("baro")) {
+      logger.info(`Barometer: ${message}`);
+    } else if (message.startsWith("acceleration")) {
+      logger.info(`Acceleration: ${message}`);
+    } else if (message.startsWith("tof")) {
+      logger.info(`TOF: ${message}`);
+    } else if (message.startsWith("wifi")) {
+      logger.info(`WiFi: ${message}`);
+    } else {
+      logger.info(`Unhandled feedback: ${message}`);
+    }
   },
 };

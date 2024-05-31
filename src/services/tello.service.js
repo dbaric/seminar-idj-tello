@@ -11,35 +11,50 @@ client.on("message", (message) => {
   }
 });
 
-module.exports = {
-  connect: function () {
-    client.send("command", 0, 7, config.TELLO_PORT, config.TELLO_IP, (err) => {
+const sendCommand = (command) => {
+  client.send(
+    command,
+    0,
+    command.length,
+    config.TELLO_PORT,
+    config.TELLO_IP,
+    (err) => {
       if (err) {
         logger.error(err);
+      } else if (command === "command") {
+        logger.info(`Connected to drone`);
       } else {
-        logger.info("Connected to Tello");
+        logger.info(`Sent command: ${command}`);
       }
-    });
+    }
+  );
+};
+
+const telemetryCommands = {
+  requestBattery: "battery?",
+  requestSpeed: "speed?",
+  requestAttitude: "attitude?",
+  requestBarometer: "baro?",
+  requestAcceleration: "acceleration?",
+  requestTof: "tof?",
+  requestWifi: "wifi?",
+};
+
+module.exports = {
+  connect: function () {
+    sendCommand("command");
   },
 
-  sendCommand: function (command) {
-    client.send(
-      command,
-      0,
-      command.length,
-      config.TELLO_PORT,
-      config.TELLO_IP,
-      (err) => {
-        if (err) {
-          logger.error(err);
-        } else {
-          logger.info(`Sent command: ${command}`);
-        }
-      }
-    );
-  },
+  sendCommand,
 
   onMessage: function (handler) {
     messageHandler = handler;
   },
 };
+
+Object.keys(telemetryCommands).forEach((key) => {
+  module.exports[key] = () => {
+    logger.info(`Requesting ${key.replace("request", "").toLowerCase()}...`);
+    sendCommand(telemetryCommands[key]);
+  };
+});
