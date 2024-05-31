@@ -1,3 +1,5 @@
-const logger = require("./utils/logger");
+const droneController = require("./controllers/drone.controller");
+const keyboardController = require("./controllers/keyboard.controller");
 
-logger.info(`Hello world!`);
+droneController.init();
+keyboardController.init();
